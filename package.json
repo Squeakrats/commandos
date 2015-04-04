@@ -5,10 +5,11 @@
   "main": "bootstrap.js",
   "dependencies": {
     "express": "^4.12.3",
-    "socket.io": "^1.3.5",
+    "gulp-traceur": "^0.17.0",
     "gulp": "^3.8.11",
-    "systemjs": "^0.16.6",
-    "traceur": "^0.0.87"
+    "socket.io": "^1.3.5",
+    "traceur": "^0.0.87",
+    "systemjs": "^0.16.6"
   },
   "devDependencies": {},
   "scripts": {
