@@ -1,0 +1,52 @@
+<html>
+<head>
+	<title>CommandosClone</title>
+
+	<script id="vertex" type="x-shader/x-vertex">
+	//temp generic approach (TODO batching (ie tilee of same type + rotation))
+	attribute vec2 aPosition;
+	attribute vec2 aTextureCoordinate;
+
+	uniform mat3 mvMatrix;
+	varying vec2 vTextureCoordinate;
+
+	void main(void) {
+		//store z-index in the matrix too. the resl
+		gl_Position = vec4( (mvMatrix * vec3(aPosition, 1.0)).xy , 0.0, 1.0);
+		//gl_Position = vec4(aPosition * 1.0, 0.0, 1.0);
+
+		vTextureCoordinate = aTextureCoordinate;
+	}
+	</script>
+
+	<script id="fragment" type="x-shader/x-fragment">
+		precision mediump float;
+		uniform sampler2D uTexture;
+		varying vec2 vTextureCoordinate;
+
+		void main(void) {
+			gl_FragColor = texture2D(uTexture, vTextureCoordinate);
+			//gl_FragColor = vec4(vTextureCoordinate, 0.0, 1.0);
+		}
+
+	</script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="scripts/3rdparty/system.js"></script>
+	<script>
+		System.config({
+		  paths: {
+		    traceur: 'scripts/3rdparty/traceur.js'
+		  }
+		})
+		//by hand add all the imports here I guess.
+
+		System.import('scripts/app').then(function(m) {
+		  console.log(m);
+		}).catch(function(e){
+			console.log(e);
+		})
+	</script>
+</head>
+<body>
+</body>
+</html>
