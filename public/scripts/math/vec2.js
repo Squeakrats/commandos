@@ -52,4 +52,8 @@ export default class vec2 {
 	static dot(a, b) {
 		return a.x * b.x + a.y * b.y;
 	}
+
+	static lerp(a, b, u) {
+		return new vec2( a.x * (1-u) + b.x * u, a.y * (1-u) + b.y * y);
+	}
 }

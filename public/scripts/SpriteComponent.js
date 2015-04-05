@@ -8,25 +8,6 @@ export default class SpriteComponent {//should implement renderable or somthing.
 		this.actor = actor;
 		this.matrix = mat3.createScaling(width, height);
 		this.textureName = textureName;
-
-		this.vertices = new Float32Array([
-			 .5,  .5, 
-			-.5,  .5,
-			-.5, -.5,
-			 .5,  .5,
-			-.5, -.5,
-			 .5, -.5 
-		])
-
-		this.uvs = new Float32Array([
-			1, 1,
-			0, 1,
-			0, 0,
-			1, 1,
-			0, 0,
-			1, 0
-		])	
-
 	}
 
 	get width () {
@@ -44,6 +25,8 @@ export default class SpriteComponent {//should implement renderable or somthing.
 	set height(value) {
 		this.matrix.matrix[4] = value
 	}
+	
+	//actor.scale.x vs actor.spriteComponent
 
 
 

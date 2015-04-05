@@ -1,4 +1,6 @@
-export default class Scene {
+import {createTextureFromImage} from "./glutil"
+export default class Scene {//oh well to rendering on 2 canvases
+
 	constructor() {
 		this.children = [];
 	}
@@ -6,4 +8,6 @@ export default class Scene {
 	addChild(child) {
 		this.children.push(child);
 	}
+
+	
 }
