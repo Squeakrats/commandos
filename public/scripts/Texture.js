@@ -35,9 +35,12 @@ export default class Texture {
 	}
 
 	static loadFormatted(url) {//only load pngs for now
-		var imageURL = url, jsonURL = url.replace(".png", ".json");
+		var fileName = url.match("[a-zA-Z0-9]+.(png|jp[e]?g)")[0];
+		var extension = fileName.split(".")[1];
+		var jsonURL = url.replace(extension, "json")
+
 		return new Promise((resolve) => {
-			Promise.all([loadImage(imageURL), loadJSON(jsonURL)]).then((results)=>{
+			Promise.all([loadImage(url), loadJSON(jsonURL)]).then((results)=>{
 				var image = results[0], uvs = results[1];
 				var textures = {};
 				for(let key in uvs){
@@ -49,6 +52,20 @@ export default class Texture {
 	}
 
 	static loadFormattedBatch(urls) {
+		return new Promise((resolve, reject) => {
+			if(urls === undefined || urls.length == 0){
+				reject("No urls :(")
+			}
+			var textures = {};
+			Promise.all(urls.map( (url) =>  { return this.loadFormatted(url) } )).then((files) =>{
+				for(let file of files){
+					for(var key in file){
+						textures[key] = file[key]
+					}
+				}
+				resolve(textures);
+			})
+		})
 		
 	}
 

@@ -74,7 +74,7 @@ export default class Renderer {
 		var gl = this.gl;
 		var texture = this.textures[textureName];
 		if(texture === undefined){
-			console.log('WARNING:ATTEMPTING TO RENDER AN UNKNOWN TEXTURE ${textureName}')
+			console.log('WARNING:ATTEMPTING TO RENDER AN UNKNOWN TEXTURE ' + textureName)
 			//figure out why harmony template literals are not working @TODO
 			return;
 		}
