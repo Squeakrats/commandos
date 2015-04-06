@@ -15,7 +15,10 @@ import ObjectContainer from "./ObjectContainer"
 import Input from "./Input";
 import {loadMap} from "./maputil"
 import GridContainer from "./GridContainer"
+import {AStarGrid} from "./AStar"
 
+var grid = new AStarGrid(10, 10);
+	grid.search(grid.grid[0][0], grid.grid[4][4])
 
 /*
 implement z-index. !!Important 
