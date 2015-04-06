@@ -1,0 +1,28 @@
+{
+  "name": "commandos",
+  "version": "1.0.0",
+  "description": "commandos",
+  "main": "bootstrap.js",
+  "dependencies": {
+    "express": "^4.12.3",
+    "gulp-traceur": "^0.17.0",
+    "gulp": "^3.8.11",
+    "socket.io": "^1.3.5",
+    "traceur": "^0.0.87",
+    "systemjs": "^0.16.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Squeakrats/commandos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Squeakrats/commandos/issues"
+  },
+  "homepage": "https://github.com/Squeakrats/commandos"
+}
