@@ -8,6 +8,5 @@ export default class Scene {//oh well to rendering on 2 canvases
 	addChild(child) {
 		this.children.push(child);
 	}
-
-	
+		
 }

@@ -21,6 +21,7 @@ export default class Renderer {
 		this.textures = {};
 
 		this.spriteProgram = createProgram(gl, document.getElementById("vertex").innerHTML, document.getElementById("fragment").innerHTML)
+		this.mvMatrixLocation = gl.getUniformLocation(this.spriteProgram, "mvMatrix");
 		
 		this.spriteVertexBuffer = gl.createBuffer();
 
@@ -34,6 +35,17 @@ export default class Renderer {
 			-.5, -.5,
 			 .5, -.5 
 		]), gl.STATIC_DRAW);
+
+		this.matrix = mat3.createIdentity();
+		this.stack = [];
+	}
+
+	push () {
+		this.stack.push(this.matrix.clone());
+	}
+
+	pop(){
+		this.matrix = this.stack.pop();
 	}
 
 	addTexture(texture) {
@@ -76,9 +88,13 @@ export default class Renderer {
 		//verify we have the sprite loaded. 
 	}
 
-	render(scene, camera) {//@TODO dont assume everything is a sprite. huaehuaheuae
+	clear() {
 		var gl = this.gl;
 		gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+	}
+
+	render(scene, camera) {
+		var gl = this.gl;
 		gl.useProgram(this.spriteProgram);//assume everything is a sprite for now
 		gl.enableVertexAttribArray(0);
 		gl.enableVertexAttribArray(1);
@@ -87,17 +103,35 @@ export default class Renderer {
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.spriteVertexBuffer);
 		gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
-		for(let sprite of scene.children) {
-
-			this.setupTexture(sprite.textureName);
-			//console.log(camera.transform.inverse)
-			//also alow recursives (push/pop) calls later so we can have sprite containers. 
-			var mvMatrix = mat3.multiply(camera.ortho,  camera.transform.inverse );
-				mvMatrix = mat3.multiply(mvMatrix, sprite.actor.transform.matrix)
-				mvMatrix = mat3.multiply(mvMatrix, sprite.matrix)
-
-			gl.uniformMatrix3fv(mvMatrixLocation, false, mvMatrix.matrix);
-			gl.drawArrays(gl.TRIANGLES, 0, 6);//sprites always have 6,,,,
+		this.push();
+		this.matrix.multiply(camera.ortho).multiply(camera.transform.inverse);
+		for(let child of scene.children) {
+			this.renderChild(camera, child);
 		}
+		this.pop();
+	}
+
+
+	renderChild(camera, child) {//ASSUME ONLY SPRITES + OBJECTCONTAINERS> MIGHT FIND OUT THERE ARE OTHERS LATER. 
+		var gl = this.gl;
+		this.push();
+		this.matrix.multiply(child.transform.matrix);
+
+		if(child.renderType == "Sprite"){
+			this.push();
+			this.matrix.multiply(child.matrix);
+			this.setupTexture(child.textureName);
+			gl.uniformMatrix3fv(this.mvMatrixLocation, false, this.matrix.matrix);
+			gl.drawArrays(gl.TRIANGLES, 0, 6);
+			this.pop();
+
+		}else if(child.renderType == "ObjectContainer"){
+			var children = child.getChildren(this.matrix, camera);//this is prob not gonna work for awhile. 
+			for(let child of children){
+				this.renderChild(camera, child);
+			}
+		}
+
+		this.pop();
 	}
 }

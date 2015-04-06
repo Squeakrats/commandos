@@ -6,67 +6,78 @@ import Renderer from "./Renderer"
 import Scene from "./Scene"
 import Actor from "./Actor"
 import Commando from "./Commando"
-import SpriteComponent from "./SpriteComponent"
+import Sprite from "./Sprite"
 import {createTextureFromUrl} from "./glutil"
 import Transform from "./Transform"
 import {loadFile, loadJSON} from "./util"
 import Texture from "./Texture";
+import ObjectContainer from "./ObjectContainer"
+import Input from "./Input";
+/*
+implement a map loader 
+implement view culling via grid container
+implement z-index. !!Important 
+create or find a texture atlas so I can start baking textures together in batches. 
+look up full promize spec. I think im doing it wrong (too much nesting)
 
-
-
+*/
+var container = new ObjectContainer(new Transform(new vec2(0,0), 0));
 var buildPlayer = function (position, rotation) {
-	var actor = new Commando( new Transform(new vec2(0,0), 0) );
-	actor.addComponent(new SpriteComponent(actor, 64, 64, "player1"))
+	var actor = new Commando( new Transform (new vec2(0,0), 0));
+	actor.addComponent(new Sprite(actor.transform, 64, 64, "player1"));
 	return actor;
 }
 
-var actor = buildPlayer(new vec2(0,0), 0);
-var keys = {};
 
-var renderer = new Renderer(800, 500)
-var scene = new Scene();
+//init renderer
+var renderer = new Renderer(800, 500);
+document.body.appendChild(renderer.domElement);
 
 Texture.loadAtlas("assets/player1.png").then((textures)=>{
 	renderer.addTextures(textures);
 })
 
-scene.addChild(actor.components.SpriteComponent)
+//create world
 var camera = new Camera(800/2, 500/2);
-document.body.appendChild(renderer.domElement);
-var last = Date.now();
-var inter = setInterval(function(){
-//	/*
-	var now = Date.now();
-	var deltaMS = now - last;
-	last = now;
-	var walkSpeed = 2
-	var position = actor.transform.position;
-	if(keys[87]) position.y += walkSpeed * deltaMS;
-	if(keys[83]) position.y -= walkSpeed * deltaMS;
-	if(keys[65]) position.x -= walkSpeed * deltaMS;
-	if(keys[68]) position.x += walkSpeed * deltaMS;
-	actor.transform.position = position;
+var scene = new Scene();
+var input = new Input();
 
-
-	renderer.render(scene, camera)//*/
-	//clearInterval(inter)
-}, 17)
+var actor = buildPlayer(new vec2(0,0), 0);
+scene.addChild(container);
+scene.addChild(actor.components.Sprite)
 
 
 
-addEventListener("keydown", function(e) {
-	keys[e.keyCode] = true;
-})
 
-addEventListener("keyup", function(e) {
-	delete keys[e.keyCode];
-})
 
-/*
-addEventListener("mousedown", function (e) {
-	//implement this as camera.screenToWorld
-	var x = e.pageX + camera.position.x - renderer.domElement.width/2;
-	var y = (renderer.domElement.height - e.pageY) - renderer.domElement.height/2 + camera.position.y//I know redundant
-	//console.log(x, y);
-	//socket.emit("set_waypoint", {x:x,y:y});
-})*/
+
+
+setTimeout(function(){
+	var last = Date.now();
+	setInterval(function(){
+		var now = Date.now()
+		var deltaMS = now - last;
+		last = now;
+		var position = actor.transform.position;
+		var speed = 3;
+		if(input.isKeyDown("W")) position.y += speed * deltaMS;
+		if(input.isKeyDown("S")) position.y -= speed * deltaMS
+		if(input.isKeyDown("A")) position.x -= speed * deltaMS;
+		if(input.isKeyDown("D")) position.x += speed * deltaMS;
+		actor.transform.position = position;
+
+		var position = camera.transform.position;
+		if(input.isKeyDown("I")) position.y += speed * deltaMS;
+		if(input.isKeyDown("K")) position.y -= speed * deltaMS
+		if(input.isKeyDown("J")) position.x -= speed * deltaMS;
+		if(input.isKeyDown("L")) position.x += speed * deltaMS;
+		camera.transform.position = position;
+
+		renderer.clear();
+		renderer.render(scene, camera);
+	}, 17)
+	
+}, 300);
+
+
+

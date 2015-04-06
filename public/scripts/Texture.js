@@ -34,7 +34,7 @@ export default class Texture {
 		
 	}
 
-	static loadAtlas(url) {//only load pngs for now
+	static loadFormatted(url) {//only load pngs for now
 		var imageURL = url, jsonURL = url.replace(".png", ".json");
 		return new Promise((resolve) => {
 			Promise.all([loadImage(imageURL), loadJSON(jsonURL)]).then((results)=>{
@@ -46,6 +46,10 @@ export default class Texture {
 				resolve(textures)
 			})
 		})
+	}
+
+	static loadFormattedBatch(urls) {
+		
 	}
 
 	static load(name, url) {//@TODO test this

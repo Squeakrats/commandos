@@ -1,0 +1,37 @@
+{
+	"blockSize" : 64,
+	"images" : [
+		"assets/grass.png",
+		"assets/concrete.png"
+	],
+	"tiles" : [
+		{ 
+			"name" : "grass", 
+			"texture" : "grass", 
+			"isWalkable" : false, 
+			"isDestructable" : false
+		},
+		{ 
+			"name" : "concrete", 
+			"texture" : "concrete", 
+			"isWalkable" : false, 
+			"isDestructable" : false
+		}
+
+
+	],
+	"map" : [
+		[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+		[1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		[1, 0, 1, 0, 0, 1, 0, 1, 0, 1],
+		[1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+		[1, 0, 1, 0, 0, 1, 0, 1, 0, 1],
+		[1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+		[1, 0, 1, 0, 0, 1, 0, 1, 0, 1],
+		[1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+		[1, 0, 1, 0, 0, 1, 0, 1, 0, 1],
+		[1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+	]
+}
+

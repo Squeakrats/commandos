@@ -4,6 +4,49 @@ export default class mat3 {
 		this.matrix = new Float32Array(9);
 	}
 
+
+	clone(){
+		return mat3.fromArray(this.matrix);
+	}
+
+	multiply(b) {
+		var a = this.matrix, b = b.matrix;
+
+		var a00 = a[0], a01 = a[1], a02 = a[2],
+        a10 = a[3], a11 = a[4], a12 = a[5],
+        a20 = a[6], a21 = a[7], a22 = a[8],
+
+        b00 = b[0], b01 = b[1], b02 = b[2],
+        b10 = b[3], b11 = b[4], b12 = b[5],
+        b20 = b[6], b21 = b[7], b22 = b[8];
+
+        var out = this.matrix;
+	    out[0] = b00 * a00 + b01 * a10 + b02 * a20;
+	    out[1] = b00 * a01 + b01 * a11 + b02 * a21;
+	    out[2] = b00 * a02 + b01 * a12 + b02 * a22;
+
+	    out[3] = b10 * a00 + b11 * a10 + b12 * a20;
+	    out[4] = b10 * a01 + b11 * a11 + b12 * a21;
+	    out[5] = b10 * a02 + b11 * a12 + b12 * a22;
+
+	    out[6] = b20 * a00 + b21 * a10 + b22 * a20;
+	    out[7] = b20 * a01 + b21 * a11 + b22 * a21;
+	    out[8] = b20 * a02 + b21 * a12 + b22 * a22;
+	    return this;
+	}
+	static fromArray(array) {
+		var out  = new mat3(), matrix = out.matrix;
+		matrix[0] = array[0];
+		matrix[1] = array[1];
+		matrix[2] = array[2];
+		matrix[3] = array[3];
+		matrix[4] = array[4];
+		matrix[5] = array[5];
+		matrix[6] = array[6];
+		matrix[7] = array[7];
+		matrix[8] = array[8];
+		return out;
+	}
 	static createIdentity () {
 		var mat = new mat3(), matrix = mat.matrix;
 		matrix[0] = 1;
